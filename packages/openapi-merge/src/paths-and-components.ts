@@ -252,9 +252,13 @@ export function mergePathsAndComponents(inputs: MergeInput): PathAndComponents |
         });
       }
 
-      // security schemes are different, we just take the security schemes from the first file that has any
-      if (oas.components.securitySchemes !== undefined && Object.keys(oas.components.securitySchemes).length > 0 && result.components.securitySchemes === undefined) {
-        result.components.securitySchemes = oas.components.securitySchemes;
+      // security schemes
+      if (oas.components.securitySchemes !== undefined) {
+        result.components.securitySchemes = result.components.securitySchemes || {};
+
+        processComponents(result.components.securitySchemes, oas.components.securitySchemes, deepEquality(resultLookup, currentLookup), { prefix: '', mergeDispute: true, ...dispute }, (from: string, to: string) => {
+          referenceModification[`#/components/securitySchemes/${from}`] = `#/components/securitySchemes/${to}`;
+        });
       }
 
       // links
