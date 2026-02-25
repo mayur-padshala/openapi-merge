@@ -11,3 +11,5 @@
 
 # don't lint nyc coverage output
 /coverage
+
+.idea/

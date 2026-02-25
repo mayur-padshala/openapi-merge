@@ -52,7 +52,7 @@ function processComponents<A>(results: Components<A>, components: Components<A>,
         }
 
         // Incrementally find the right prefix
-        for(let antiConflict = 1; schemaPlaced === false && antiConflict < 1000; antiConflict++) {
+        for(let antiConflict = 1; !schemaPlaced && antiConflict < 1000; antiConflict++) {
           const trySchemaKey = `${key}${antiConflict}`;
 
           if (results[trySchemaKey] === undefined) {
@@ -63,7 +63,7 @@ function processComponents<A>(results: Components<A>, components: Components<A>,
         }
 
         // In the unlikely event that we can't find a duplicate, return an error
-        if (schemaPlaced === false) {
+        if (!schemaPlaced) {
           return {
             type: 'component-definition-conflict',
             message: `The "${key}" definition had a duplicate in a previous input and could not be deduplicated.`
@@ -256,7 +256,7 @@ export function mergePathsAndComponents(inputs: MergeInput): PathAndComponents |
       if (oas.components.securitySchemes !== undefined) {
         result.components.securitySchemes = result.components.securitySchemes || {};
 
-        processComponents(result.components.securitySchemes, oas.components.securitySchemes, deepEquality(resultLookup, currentLookup), { prefix: '', mergeDispute: true, ...dispute }, (from: string, to: string) => {
+        processComponents(result.components.securitySchemes, oas.components.securitySchemes, deepEquality(resultLookup, currentLookup), dispute, (from: string, to: string) => {
           referenceModification[`#/components/securitySchemes/${from}`] = `#/components/securitySchemes/${to}`;
         });
       }
@@ -292,7 +292,6 @@ export function mergePathsAndComponents(inputs: MergeInput): PathAndComponents |
         referenceModification[`#/paths/${originalPath}`] = `#/paths/${newPath}`;
       }
 
-      // TODO perform more advanced matching for an existing path than an equals check
       if (result.paths[newPath] !== undefined) {
         return {
           type: 'duplicate-paths',

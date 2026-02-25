@@ -17,6 +17,18 @@
     "email": "packages@rmdir.app",
     "url": "https://rmdir.app/"
   },
+  "contributors": [
+    {
+      "name": "Mayur Padshala",
+      "email": "mayurpatel3209@gmail.com"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Mayur Padshala",
+      "email": "mayurpatel3209@gmail.com"
+    }
+  ],
   "license": "MIT",
   "private": false,
   "homepage": "https://github.com/robertmassaioli/openapi-merge",

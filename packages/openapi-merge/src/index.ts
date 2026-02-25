@@ -5,6 +5,7 @@ import { mergePathsAndComponents } from './paths-and-components';
 import { mergeExtensions } from './extensions';
 import { Swagger } from 'atlassian-openapi';
 import { mergeInfos } from './info';
+import { mergeSecurity } from "./security";
 
 export { MergeInput, MergeResult, isErrorResult, PathModification, OperationSelection };
 
@@ -44,7 +45,7 @@ export function merge(inputs: MergeInput): MergeResult {
       info: mergeInfos(inputs),
       servers: getFirstMatching(inputs, input => input.oas.servers),
       externalDocs: getFirstMatching(inputs, input => input.oas.externalDocs),
-      security: getFirstMatching(inputs, input => input.oas.security),
+      security: mergeSecurity(inputs),
       tags: mergeTags(inputs),
       paths,
       components,
